@@ -15,8 +15,8 @@ if (isset($_POST["ClassInfo"]) && $_POST["ClassInfo"] !== "") {
     $fileTmpName = $file["tmp_name"];
     $fileError = $file["error"];
 
-    if ($fileError === 0) {
-        $uploads = "/home/dfroger1/syllabi/";
+    if ($fileError == 0) {
+        $uploads = "syllabi/";
         if (!file_exists($uploads)) {
             mkdir($uploads, 0777, true);
         }
@@ -29,7 +29,7 @@ if (isset($_POST["ClassInfo"]) && $_POST["ClassInfo"] !== "") {
 
             if ($stmt->rowCount() > 0) {
                 echo "<div class='row'>";
-                echo "Syllabus uploaded successfully, redirecting you to previous page in 5 seconds.";
+                echo "Syllabus uploaded successfully to $syllabus, redirecting you to previous page in 5 seconds.";
                 echo "</div>";
                 
             } else {

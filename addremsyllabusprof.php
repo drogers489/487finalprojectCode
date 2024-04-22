@@ -37,7 +37,7 @@ $stmt->execute([$prof]);
         </label>
     </form>
     <div class='row'>
-    <a href='CourseDisplayPage.php'><button>Log Out</button></a>
+    <a href='displaycourses.php'><button>Log Out</button></a>
     </div>
 </body>
 

@@ -23,7 +23,6 @@ $stmt -> execute();
         <div class="row">
             <label for="left-label" class="left inline">
                 <h3>Add Class to Display</h3>
-                <!--<p>Department Code: <input type=text name=DeptCode></p>-->
                 <p>Class Code: <select name="ClassID">
                     <option></option>
                     <?php
@@ -58,7 +57,7 @@ $stmt -> execute();
                 </p>
                 <p>Timeslot: <input type=text name=TimeSlot></p>
                 <p>Classroom: <input type=text name=ClassRoom></p>
-                <!--
+                
                 <p>Lab: <label>
                         <input type="radio" name="Lab" value="1">
                         True
@@ -66,7 +65,7 @@ $stmt -> execute();
                     <label>
                         <input type="radio" name="Lab" value="0">
                         False
-                    </label> -->
+                    </label>
                     <br>
                     <input type="submit" name="submit" class="button round" value="Add Class" />
             </label>

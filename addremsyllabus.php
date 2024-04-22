@@ -6,37 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add/Remove Syllabus</title>
 </head>
-<?php
-require_once ("487_functions.php");
-require_once ("databasefin.php");
-new_header("Administrator Homepage","adminhome.php");
-$mysqli = Database::dbConnect();
-$mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$sql = "SELECT `ClassID`,`ProfessorID` FROM `CurrentClasses`";
-$stmt = $mysqli->prepare($sql);
-$stmt->execute();
-?>
 
 <body>
-    <form method="post" action="submit_added_syl.php" enctype="multipart/form-data">
+    <?php
+    require_once("487_functions.php");
+    require_once("databasefin.php");
+    new_header("Administrator Homepage", "adminhome.php");
+
+    try {
+        $pdo = Database::dbConnect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT `ClassID`,`ProfessorID` FROM `CurrentClasses`";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+    } catch (PDOException $e) {
+        die("Database error: " . $e->getMessage());
+    }
+    ?>
+
+    <form method="post" action="submit_added_syl2.php" enctype="multipart/form-data">
         <div class="row">
             <label for="left-label" class="left inline">
                 <h3>Add Syllabus</h3>
-                Choose class to add Syllabus to:<select name="ClassInfo">
+                Choose class to add Syllabus to:
+                <select name="ClassInfo">
                     <option></option>
                     <?php
                     while ($class = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo "<option value='{$class['ClassID']},{$class['ProfessorID']}'>{$class['ClassID']}, {$class['ProfessorID']}</option>";
                     }
                     ?>
-                    <input type="file" name="Syllabus" accept=".pdf,.doc,.docx">
-                    <button type="submit" name="submit">Upload</button>
+                </select>
+                <input type="file" name="uploaded_file" accept=".pdf,.doc,.docx">
+                <button type="submit" name="submit">Upload</button>
+            </label>
         </div>
-        </label>
     </form>
+
     <div class='row'>
-    <a href='adminhome.php'><button>Go Back</button></a>
+        <a href='adminhome.php'><button>Go Back</button></a>
     </div>
 </body>
 

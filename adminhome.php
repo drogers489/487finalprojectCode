@@ -22,7 +22,7 @@ new_header("Administrator Homepage","adminhome.php");
         <a href="addremsyllabus.php"><button>Add/Remove Syllabi</button></a>
         <a href="addremlab.php"><button>Add/Remove Labs</button></a>
         <br>
-        <a href="CourseDisplayPage.php"><button>Log Out</button></a>
+        <a href="displaycourses.php"><button>Log Out</button></a>
     </div>
 </body>
 
