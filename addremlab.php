@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add/Remove Class</title>
-</head>
 <?php
+require_once ("session.php");
 require_once ("487_functions.php");
 require_once ("databasefin.php");
-require_once ("CRUD/session.php");
+verify_admin_login();
 new_header("Administrator Homepage", "adminhome.php");
 $mysqli = Database::dbConnect();
 $mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -27,7 +20,7 @@ if (isset($_POST["addLab"])) {
         list($ClassID, $ClassSection) = explode(",", $_POST["CourseID"]);
         $DaysMeeting = implode(",", $_POST["DaysMeeting"]);
         $TimeSlot = $_POST["TimeSlot"];
-        echo "ClassID: " . $ClassID . " ClassSection: ".$ClassSection;
+        echo "ClassID: " . $ClassID . " ClassSection: " . $ClassSection;
 
         try {
             $stmt = $mysqli->prepare("INSERT INTO `Labs` (`ClassID`, `ClassSection`, `DaysMeeting`, `TimeSlot`) VALUES (?, ?, ?, ?)");
@@ -58,13 +51,21 @@ if (isset($_POST["addLab"])) {
     redirect("addremlab.php");
 } else {
     ?>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add/Remove Lab</title>
+    </head>
 
     <body>
         <form method="POST" action="addremlab.php">
             <div class="row">
                 <label for="left-label" class="left inline">
                     <h3>Add Lab</h3>
-                    <p>Class Code: <select name="CourseID">
+                    <p>Course Section: <select name="CourseID">
                             <option></option>
                             <?php
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

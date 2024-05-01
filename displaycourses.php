@@ -1,12 +1,9 @@
 <?php
 require_once ("487_functions.php");
 require_once ("databasefin.php");
+
 $mysqli = Database::dbConnect();
 $mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$sql = "SELECT * FROM `CurrentClasses` NATURAL JOIN `AllClasses` NATURAL JOIN `Professors` ORDER BY SUBSTRING(ClassID, -3)";
-$stmt = $mysqli->prepare($sql);
-$stmt->execute();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
     if (isset($_POST["selectedCourses"])) {
@@ -22,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
                 $courseDetails .= "===========================================" . "\n";
                 $courseDetails .= "Course: " . $row1['ClassID'] . " Section " . $row1['ClassSection'] . "\n";
                 $courseDetails .= "Professor: " . $row1['PTitle'] . " " . $row1['PFName'] . " " . $row1['PLName'] . "\n";
+                $courseDetails .= "Meeting Days: " . $row1['DaysMeeting'] . " from " . $row1['TimeSlot'] . "\n";
 
             }
         }
@@ -32,7 +30,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         exit;
     }
 }
+
 new_loginheader("Current CSCI/CIS Courses", "displaycourses.php");
+
+$sql = "SELECT * FROM `CurrentClasses` NATURAL JOIN `AllClasses` NATURAL JOIN `Professors` ORDER BY SUBSTRING(ClassID, -3)";
+$stmt = $mysqli->prepare($sql);
+$stmt->execute();
+
 ?>
 <!doctype html>
 <html>
@@ -65,7 +69,7 @@ new_loginheader("Current CSCI/CIS Courses", "displaycourses.php");
         <header>
             <div class="container">
                 <br>
-                <h3 class="col-lg-9">Next Semester's CIS/CSCI Courses</h3>
+                <h3 class="col-lg-9">Next Semester's CSCI/CIS Courses</h3>
                 <br>
             </div>
         </header>
@@ -102,6 +106,9 @@ new_loginheader("Current CSCI/CIS Courses", "displaycourses.php");
                 <tr class='childTableRow'>
                     <td colspan='9'>
                         <h5>{$row['ClassID']} Section {$row['ClassSection']} Details</h5>";
+                            $stmt3 = $mysqli->prepare("SELECT ProfessorID, ClassID, file_name FROM Syllabi NATURAL JOIN CurrentClasses WHERE ClassID LIKE ? AND ProfessorID LIKE ?");
+                            $stmt3->execute([$row["ClassID"], $row["ProfessorID"]]);
+                            $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
                             if ($row["Lab"] == "1") {
                                 $ClassID = "%" . $row["ClassID"] . "%";
                                 $ClassSection = $row["ClassSection"];
@@ -122,13 +129,21 @@ new_loginheader("Current CSCI/CIS Courses", "displaycourses.php");
                                         <tbody>
                                         <tr>
                                         <td>{$row['PEmail']}</td>
-                                        <td>PLACEHOLDER</td>
+                                        <td>";
+                                if ($row3) {
+                                    $id = $row3['ProfessorID'] . "," . $row3["ClassID"];
+                                    $filename = $row3["ClassID"] .  " Syllabus "  . $row3['ProfessorID'];
+                                    echo "<a href='syldown.php?id=$id'>$filename</a>";
+                                } else {
+                                    echo "File not found.";
+                                }
+                                echo "</td>
                                         <td><a href='https://my.olemiss.edu/irj/portal?NavigationTarget=navurl://408225e484f76553b120223a08ac2a44'>myOleMiss Login (Will need teacher/course name)</a></td>
                                         <td>Required</td>";
-                                        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                                            echo "<td>{$row2['DaysMeeting']}</td><td>{$row2['TimeSlot']}</td>";
-                                        }
-                                        echo "</tr></tbody></table>";
+                                while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<td>{$row2['DaysMeeting']}</td><td>{$row2['TimeSlot']}</td>";
+                                }
+                                echo "</tr></tbody></table>";
                             } else {
                                 echo "<table class='table'>
                                             <thead>
@@ -142,7 +157,15 @@ new_loginheader("Current CSCI/CIS Courses", "displaycourses.php");
                                             <tbody>
                                                 <tr>
                                                     <td>{$row['PEmail']}</td>
-                                                    <td></td>
+                                                    <td>";
+                                if ($row3) {
+                                    $id = $row3['ProfessorID'] . "," . $row3["ClassID"];
+                                    $filename = $row3["ClassID"] .  " Syllabus "  . $row3['ProfessorID'];
+                                    echo "<a href='syldown.php?id=$id'>$filename</a>";
+                                } else {
+                                    echo "File not found.";
+                                }
+                                echo "</td>
                                                     <td><a href='https://my.olemiss.edu/irj/portal?NavigationTarget=navurl://408225e484f76553b120223a08ac2a44'>Teacher Evaluations (Will need teacher/course name)</a></td>
                                                     <td>None</td>
                                                 </tr>

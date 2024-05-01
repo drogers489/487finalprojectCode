@@ -9,6 +9,7 @@ class Database
   public static function dbConnect()
   {
     $mysqli = null;
+    // replace file with equivalent if rehosting
     require_once ("/home/dfroger1/DBrogers.php");
     try {
       $mysqli = new PDO('mysql:host=' . DBHOST . ';dbname=' . DBNAME, USERNAME, PASSWORD);
