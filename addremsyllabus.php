@@ -13,7 +13,7 @@ try {
     $mysqli = Database::dbConnect();
     $mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "SELECT DISTINCT `ClassID`,`ProfessorID` FROM `CurrentClasses`";
+    $sql = "SELECT DISTINCT CurrentClasses.ClassID, CurrentClasses.ProfessorID FROM CurrentClasses LEFT JOIN Syllabi ON CurrentClasses.ClassID = Syllabi.ClassID WHERE Syllabi.ProfessorID IS NULL";
     $stmt = $mysqli->prepare($sql);
     $stmt->execute();
 } catch (PDOException $e) {

@@ -55,6 +55,18 @@ if (isset($_POST["addSec"])) {
     Database::dbDisconnect();
     redirect("addremclass.php");
 
+} elseif (isset($_POST["delAll"])) {
+        try {
+            $stmt = $mysqli->prepare("DELETE FROM `CurrentClasses`");
+            $stmt->execute();
+            $_SESSION["message"] = "All sections have been removed";
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            $_SESSION["message"] = "ERROR: Unable to remove all sections";
+        }
+    Database::dbDisconnect();
+    redirect("addremclass.php");
+
 } else {
 
     ?>
@@ -72,7 +84,7 @@ if (isset($_POST["addSec"])) {
                             }
                             ?>
                         </select></p>
-                    <p>Course Section: <input type=text name=ClassSection></p>
+                    <p>Course Section: <input type=number min=1 max=10 name=ClassSection></p>
                     <p>Professor (WebID):<select name="ProfessorID">
                             <option></option>
                             <?php
@@ -109,14 +121,14 @@ if (isset($_POST["addSec"])) {
                             False
                         </label>
                         <br>
-                        <input type="submit" name="addSec" class="button round" value="Add Course" />
+                        <input type="submit" name="addSec" class="button round" value="Add Section" />
                 </label>
             </div>
         </form>
         <form method="POST" action="addremclass.php">
             <div class="row">
                 <label for="left-label" class="left inline">
-                    <h3>Remove Class</h3>
+                    <h3>Remove Section</h3>
                     Choose Course Section to remove:<select name="Del">
                         <option></option>
                         <?php
@@ -129,7 +141,15 @@ if (isset($_POST["addSec"])) {
                         ?>
                     </select>
                     <br>
-                    <input type="submit" name="delSec" class="button round" value="Remove Class" />
+                    <input type="submit" name="delSec" class="button round" value="Remove Section" />
+                </label>
+            </div>
+        </form>
+        <form method="POST" action="addremclass.php">
+            <div class="row">
+                <label for="left-label" class="left inline">
+                    <h3>Remove All Sections</h3>
+                    <input type="submit" name="delAll" class="button round" value="Remove All Sections" onclick="return confirm('Are you sure you want to remove all sections? This cannot be undone.')">
                 </label>
             </div>
         </form>

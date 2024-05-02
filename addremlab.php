@@ -108,7 +108,7 @@ if (isset($_POST["addLab"])) {
                         ?>
                     </select>
                     <br>
-                    <p> <input type='submit' name='remLab' value='Remove Lab' class='tiny round button'></p>
+                    <p> <input type='submit' name='remLab' value='Remove Lab' class='round button'></p>
                 </label>
             </div>
         </form>

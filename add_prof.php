@@ -43,7 +43,7 @@ if (isset($_POST["submit"])) {
 <div class='row'>
 	<label for='left-label' class='left inline'>
 
-		<h3>Add an Administrator</h3>
+		<h3>Add a Professor Login</h3>
 
 		<form action="add_prof.php" method="post">
 			<p>Username:<select name="username"><option></option> 
@@ -56,7 +56,7 @@ if (isset($_POST["submit"])) {
 			}
 			?></select></p>
 			<p>Password: <input type="password" name="password" value="" /> </p>
-			<input type="submit" name="submit" value="Add Professor Login" />
+			<input type="submit" name="submit" value="Add Professor Login" class="button round" />
 		</form>
 	</label>
 

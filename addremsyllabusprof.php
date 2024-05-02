@@ -19,7 +19,7 @@ while ($user = $stmt0->fetch(PDO::FETCH_ASSOC)) {
     $prof = $user['username'];
 }
 
-$sql = "SELECT CurrentClasses.ClassID FROM CurrentClasses LEFT JOIN Syllabi ON CurrentClasses.ClassID = Syllabi.ClassID WHERE CurrentClasses.ProfessorID = ? AND Syllabi.ProfessorID IS NULL";
+$sql = "SELECT DISTINCT CurrentClasses.ClassID FROM CurrentClasses LEFT JOIN Syllabi ON CurrentClasses.ClassID = Syllabi.ClassID WHERE CurrentClasses.ProfessorID = ? AND Syllabi.ProfessorID IS NULL";
 $stmt = $mysqli->prepare($sql);
 $stmt->execute([$prof]);
 

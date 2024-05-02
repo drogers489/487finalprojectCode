@@ -48,7 +48,7 @@ if (isset($_POST["submit"])) {
 		<form action="add_admin.php" method="post">
 			<p>Username:<input type="text" name="username" value="" /> </p>
 			<p>Password: <input type="password" name="password" value="" /> </p>
-			<input type="submit" name="submit" value="Add Administrator" />
+			<input type="submit" name="submit" value="Add Administrator" class="button round" />
 		</form>
 	</label>
 
